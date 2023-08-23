@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain
 {
     public class Activity
     {
+        // [Key]: you can use this attribute to specify something different from Id if needed
         public Guid Id { get; set; } // primary key of database table
 
         public string Title { get; set; }
