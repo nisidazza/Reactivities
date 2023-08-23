@@ -38,7 +38,8 @@ var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<DataContext>();
-    context.Database.Migrate(); // this is equvalent to the " dotnet ef database update" command
+    await context.Database.MigrateAsync(); // this is equvalent to the " dotnet ef database update" command
+    await Seed.SeedData(context);
 }
 catch (Exception ex)
 {
