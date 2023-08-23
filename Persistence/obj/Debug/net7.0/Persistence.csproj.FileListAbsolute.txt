@@ -1,0 +1,15 @@
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/bin/Debug/net7.0/Persistence.deps.json
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/bin/Debug/net7.0/Persistence.dll
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/bin/Debug/net7.0/Persistence.pdb
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/bin/Debug/net7.0/Domain.dll
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/bin/Debug/net7.0/Domain.pdb
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/Persistence.csproj.AssemblyReference.cache
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/Persistence.GeneratedMSBuildEditorConfig.editorconfig
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/Persistence.AssemblyInfoInputs.cache
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/Persistence.AssemblyInfo.cs
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/Persistence.csproj.CoreCompileInputs.cache
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/Persistence.csproj.CopyComplete
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/Persistence.dll
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/refint/Persistence.dll
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/Persistence.pdb
+/Users/nisidaazzalini/Projects/Udemy/Reactivities/Persistence/obj/Debug/net7.0/ref/Persistence.dll
