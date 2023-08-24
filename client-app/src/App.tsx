@@ -19,10 +19,12 @@ function App() {
   const [activities, setActivities] = useState<ActivitiesType>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/activities").then((response) => {
-      console.log(response);
-      setActivities(response.data);
-    });
+    axios
+      .get("http://localhost:5000/api/activities")
+      .then((response) => {
+        setActivities(response.data);
+      })
+      .catch((error) => console.log(`Error: ${error}`));
   }, []);
 
   return (
