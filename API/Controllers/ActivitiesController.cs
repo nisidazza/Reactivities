@@ -18,7 +18,16 @@ namespace API.Controllers
         public async Task<ActionResult<Activity>> GetActivity(Guid id)
         {
             //return await _context.Activities.FindAsync(id);
-            return Ok();
+            return await Mediator.Send(new Details.Query { Id = id });
+        }
+
+        [HttpPost]
+        // the [ApiController] attribute in the BaseApiController knows that it needs to look inside the body of the request to get the activity object.
+        // Another option is to pass a hint to the activity object: ...CreateActivity([FromBody]Activity activity) 
+        //but because of the [ApiController] attribute we shouldn't need it
+        public async Task<IActionResult> CreateActivity(Activity activity)
+        {
+            return Ok(await Mediator.Send(new Create.Command { Activity = activity }));
         }
     }
 }
