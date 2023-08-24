@@ -8,7 +8,7 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
 
-        // make use of dependency injection in order to inject the data context inside the API Controller class
+        // make use of dependency injection in order to inject the mediator inside the API Controller class
         private readonly IMediator _mediator;
 
         public ActivitiesController(IMediator mediator)
