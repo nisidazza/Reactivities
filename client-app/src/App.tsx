@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Header, List, ListItem } from "semantic-ui-react";
 import "./App.css";
-import logo from "./logo.svg";
 
 type ActivityType = {
   id: string;
@@ -28,15 +28,13 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <ul>
-          {activities.map((activity) => (
-            <li key={activity.id}>{activity.title}</li>
-          ))}
-        </ul>
-      </header>
+    <div>
+      <Header as="h2" icon="users" content="Reactivities" />
+      <List>
+        {activities.map((activity) => (
+          <ListItem key={activity.id}>{activity.title}</ListItem>
+        ))}
+      </List>
     </div>
   );
 }
