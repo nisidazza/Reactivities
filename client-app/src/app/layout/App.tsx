@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Container, List, ListItem } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
+import { ActivityDashboard } from "../../features/activities/dashboard/ActivityDashboard";
 import { Activities } from "../models/activity";
 import { NavBar } from "./NavBar";
 
-function App() {
+export const App = () => {
   const [activities, setActivities] = useState<Activities>([]);
 
   useEffect(() => {
@@ -20,14 +21,8 @@ function App() {
     <>
       <NavBar />
       <Container style={{ marginTop: "7em" }}>
-        <List>
-          {activities.map((activity) => (
-            <ListItem key={activity.id}>{activity.title}</ListItem>
-          ))}
-        </List>
+        <ActivityDashboard activities={activities} />
       </Container>
     </>
   );
-}
-
-export default App;
+};
