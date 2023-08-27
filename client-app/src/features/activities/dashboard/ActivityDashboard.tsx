@@ -1,6 +1,7 @@
 import { FC } from "react";
-import { Grid, List, ListItem } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { Activities } from "../../../app/models/activity";
+import { ActivityList } from "./ActivityList";
 
 export const ActivityDashboard: FC<{ activities: Activities }> = ({
   activities,
@@ -8,11 +9,7 @@ export const ActivityDashboard: FC<{ activities: Activities }> = ({
   return (
     <Grid>
       <Grid.Column width="10">
-        <List>
-          {activities.map((activity) => (
-            <ListItem key={activity.id}>{activity.title}</ListItem>
-          ))}
-        </List>
+        <ActivityList activities={activities} />
       </Grid.Column>
     </Grid>
   );
