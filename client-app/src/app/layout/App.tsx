@@ -1,25 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Header, List, ListItem } from "semantic-ui-react";
-
-type ActivityType = {
-  id: string;
-  title: string;
-  date: string;
-  description: string;
-  category: string;
-  city: string;
-  venue: string;
-};
-
-type ActivitiesType = ActivityType[];
+import { Activities } from "../models/activity";
 
 function App() {
-  const [activities, setActivities] = useState<ActivitiesType>([]);
+  const [activities, setActivities] = useState<Activities>([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/activities")
+      .get<Activities>("http://localhost:5000/api/activities")
       .then((response) => {
         setActivities(response.data);
       })
