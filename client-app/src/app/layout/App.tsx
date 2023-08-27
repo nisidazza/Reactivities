@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Header, List, ListItem } from "semantic-ui-react";
-import "./App.css";
 
 type ActivityType = {
   id: string;
