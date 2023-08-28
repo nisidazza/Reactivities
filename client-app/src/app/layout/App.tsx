@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Container } from "semantic-ui-react";
 import { v4 as uuid } from "uuid";
 import { ActivityDashboard } from "../../features/activities/dashboard/ActivityDashboard";
+import agent from "../api/agent";
 import { Activities, Activity } from "../models/activity";
 import { NavBar } from "./NavBar";
 
@@ -14,10 +14,14 @@ export const App = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
 
   useEffect(() => {
-    axios
-      .get<Activities>("http://localhost:5000/api/activities")
+    agent.ActivitiesRequests.list()
       .then((response) => {
-        setActivities(response.data);
+        let activities: Activities = [];
+        response.forEach((activity) => {
+          activity.date = activity.date.split("T")[0];
+          activities.push(activity);
+        });
+        setActivities(activities);
       })
       .catch((error) => console.log(`Error: ${error}`));
   }, []);
