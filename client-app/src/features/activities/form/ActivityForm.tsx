@@ -6,7 +6,8 @@ export const ActivityForm: FC<{
   activity: Activity | undefined;
   closeForm: () => void;
   createOrEdit: (activity: Activity) => void;
-}> = ({ activity: selectedActivity, closeForm, createOrEdit }) => {
+  submitting: boolean;
+}> = ({ activity: selectedActivity, closeForm, createOrEdit, submitting }) => {
   const initialState = selectedActivity ?? {
     id: "",
     title: "",
@@ -69,7 +70,13 @@ export const ActivityForm: FC<{
           name="venue"
           onChange={handleInputChange}
         />
-        <Button floated="right" positive type="submit" content="Submit" />
+        <Button
+          loading={submitting}
+          floated="right"
+          positive
+          type="submit"
+          content="Submit"
+        />
         <Button
           floated="right"
           type="button"
