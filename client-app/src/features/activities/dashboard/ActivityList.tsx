@@ -2,9 +2,10 @@ import { FC } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 import { Activities } from "../../../app/models/activity";
 
-export const ActivityList: FC<{ activities: Activities }> = ({
-  activities,
-}) => {
+export const ActivityList: FC<{
+  activities: Activities;
+  selectActivity: (id: string) => void;
+}> = ({ activities, selectActivity }) => {
   return (
     <Segment>
       <Item.Group divided>
@@ -20,7 +21,12 @@ export const ActivityList: FC<{ activities: Activities }> = ({
                 </div>
               </Item.Description>
               <Item.Extra>
-                <Button floated="right" content="View" color="blue" />
+                <Button
+                  floated="right"
+                  content="View"
+                  color="blue"
+                  onClick={() => selectActivity(activity.id)}
+                />
                 <Label basic content={activity.category} />
               </Item.Extra>
             </Item.Content>

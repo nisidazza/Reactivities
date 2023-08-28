@@ -2,7 +2,9 @@ import { FC } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 
-export const ActivityForm: FC<{ activity: Activity }> = ({ activity }) => {
+
+
+export const ActivityForm = () => {
   return (
     <Segment clearing>
       <Form>

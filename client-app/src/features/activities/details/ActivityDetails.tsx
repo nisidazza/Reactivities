@@ -2,7 +2,10 @@ import { FC } from "react";
 import { Button, Card, Image } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 
-export const ActivityDetails: FC<{ activity: Activity }> = ({ activity }) => {
+export const ActivityDetails: FC<{
+  activity: Activity;
+  cancelSelectedActivity: () => void;
+}> = ({ activity, cancelSelectedActivity }) => {
   return (
     <Card fluid>
       <Image src={`/assets/categoryImages/${activity.category}.jpg`} />
@@ -16,7 +19,11 @@ export const ActivityDetails: FC<{ activity: Activity }> = ({ activity }) => {
       <Card.Content extra>
         <Button.Group widths="2">
           <Button color="blue" content="Edit" />
-          <Button color="grey" content="Cancel" />
+          <Button
+            color="grey"
+            content="Close"
+            onClick={cancelSelectedActivity}
+          />
         </Button.Group>
       </Card.Content>
     </Card>
