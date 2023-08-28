@@ -10,11 +10,17 @@ export const ActivityDashboard: FC<{
   selectedActivity: Activity | undefined;
   selectActivity: (id: string) => void;
   cancelSelectedActivity: () => void;
+  openForm: (id: string) => void;
+  closeForm: () => void;
+  editMode: boolean;
 }> = ({
   activities,
   selectedActivity,
   selectActivity,
   cancelSelectedActivity,
+  openForm,
+  closeForm,
+  editMode,
 }) => {
   return (
     <Grid>
@@ -22,13 +28,16 @@ export const ActivityDashboard: FC<{
         <ActivityList activities={activities} selectActivity={selectActivity} />
       </Grid.Column>
       <Grid.Column width="6">
-        {selectedActivity && (
+        {selectedActivity && !editMode && (
           <ActivityDetails
             activity={selectedActivity}
             cancelSelectedActivity={cancelSelectedActivity}
+            openForm={openForm}
           />
         )}
-        <ActivityForm />
+        {editMode && (
+          <ActivityForm closeForm={closeForm} activity={selectedActivity} />
+        )}
       </Grid.Column>
     </Grid>
   );

@@ -5,7 +5,8 @@ import { Activity } from "../../../app/models/activity";
 export const ActivityDetails: FC<{
   activity: Activity;
   cancelSelectedActivity: () => void;
-}> = ({ activity, cancelSelectedActivity }) => {
+  openForm: (id: string) => void;
+}> = ({ activity, cancelSelectedActivity, openForm }) => {
   return (
     <Card fluid>
       <Image src={`/assets/categoryImages/${activity.category}.jpg`} />
@@ -18,7 +19,11 @@ export const ActivityDetails: FC<{
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths="2">
-          <Button color="blue" content="Edit" />
+          <Button
+            color="blue"
+            content="Edit"
+            onClick={() => openForm(activity.id)}
+          />
           <Button
             color="grey"
             content="Close"
