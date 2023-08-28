@@ -55,6 +55,7 @@ export const ActivityForm: FC<{
           value={activity.date}
           name="date"
           onChange={handleInputChange}
+          type="date"
         />
         <Form.Input
           placeholder="City"
