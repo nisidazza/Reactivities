@@ -8,7 +8,11 @@ export const NavBar: FC<{
     <Menu inverted fixed="top">
       <Container>
         <Menu.Item header>
-          <img src="/assets/logo.png" style={{ marginRight: "10px" }} />
+          <img
+            src="/assets/logo.png"
+            style={{ marginRight: "10px" }}
+            alt="logo"
+          />
           Reactivities
         </Menu.Item>
         <Menu.Item name="Activities" />
