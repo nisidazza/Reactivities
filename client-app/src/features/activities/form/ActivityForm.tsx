@@ -5,7 +5,8 @@ import { Activity } from "../../../app/models/activity";
 export const ActivityForm: FC<{
   activity: Activity | undefined;
   closeForm: () => void;
-}> = ({ activity: selectedActivity, closeForm }) => {
+  createOrEdit: (activity: Activity) => void;
+}> = ({ activity: selectedActivity, closeForm, createOrEdit }) => {
   const initialState = selectedActivity ?? {
     id: "",
     title: "",
@@ -19,7 +20,7 @@ export const ActivityForm: FC<{
   const [activity, setActivity] = useState<Activity>(initialState);
 
   const handleSubmit = () => {
-    console.log(activity);
+    createOrEdit(activity);
   };
 
   const handleInputChange = (

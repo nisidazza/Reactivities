@@ -12,6 +12,7 @@ export const ActivityDashboard: FC<{
   cancelSelectedActivity: () => void;
   openForm: (id: string) => void;
   closeForm: () => void;
+  createOrEdit: (activity: Activity) => void;
   editMode: boolean;
 }> = ({
   activities,
@@ -20,6 +21,7 @@ export const ActivityDashboard: FC<{
   cancelSelectedActivity,
   openForm,
   closeForm,
+  createOrEdit,
   editMode,
 }) => {
   return (
@@ -36,7 +38,11 @@ export const ActivityDashboard: FC<{
           />
         )}
         {editMode && (
-          <ActivityForm closeForm={closeForm} activity={selectedActivity} />
+          <ActivityForm
+            closeForm={closeForm}
+            activity={selectedActivity}
+            createOrEdit={createOrEdit}
+          />
         )}
       </Grid.Column>
     </Grid>

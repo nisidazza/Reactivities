@@ -38,6 +38,17 @@ export const App = () => {
     setEditMode(false);
   };
 
+  const handleCreateOrEditActivity = (activity: Activity) => {
+    activity.id
+      ? setActivities([
+          ...activities.filter((a) => a.id !== activity.id),
+          activity,
+        ])
+      : setActivities([...activities, activity]);
+    setEditMode(false);
+    setSelectedActivity(activity);
+  };
+
   return (
     <>
       <NavBar openForm={handleFormOpen} />
@@ -50,6 +61,7 @@ export const App = () => {
           editMode={editMode}
           openForm={handleFormOpen}
           closeForm={handleFormClose}
+          createOrEdit={handleCreateOrEditActivity}
         />
       </Container>
     </>
