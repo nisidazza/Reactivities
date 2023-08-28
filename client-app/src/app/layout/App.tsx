@@ -71,7 +71,12 @@ export const App = () => {
   };
 
   const handleDeleteActivity = (id: string) => {
-    setActivities([...activities.filter((a) => a.id !== id)]);
+    setSubmitting(true);
+    agent.ActivitiesRequests.delete(id).then(() => {
+      setActivities([...activities.filter((a) => a.id !== id)]);
+      setSubmitting(false);
+    })
+    
   };
 
   if (loading) return <LoadingComponent content="Loading app" />;
