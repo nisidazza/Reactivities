@@ -5,7 +5,8 @@ import { Activities } from "../../../app/models/activity";
 export const ActivityList: FC<{
   activities: Activities;
   selectActivity: (id: string) => void;
-}> = ({ activities, selectActivity }) => {
+  deleteActivity: (id: string) => void;
+}> = ({ activities, selectActivity, deleteActivity }) => {
   return (
     <Segment>
       <Item.Group divided>
@@ -26,6 +27,12 @@ export const ActivityList: FC<{
                   content="View"
                   color="blue"
                   onClick={() => selectActivity(activity.id)}
+                />
+                <Button
+                  floated="right"
+                  content="Delete"
+                  color="red"
+                  onClick={() => deleteActivity(activity.id)}
                 />
                 <Label basic content={activity.category} />
               </Item.Extra>
