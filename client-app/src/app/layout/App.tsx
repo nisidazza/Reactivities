@@ -4,10 +4,13 @@ import { v4 as uuid } from "uuid";
 import { ActivityDashboard } from "../../features/activities/dashboard/ActivityDashboard";
 import agent from "../api/agent";
 import { Activities, Activity } from "../models/activity";
+import { useStore } from "../stores/store";
 import { LoadingComponent } from "./LoadingComponent";
 import { NavBar } from "./NavBar";
 
 const App = () => {
+  const { activityStore } = useStore();
+
   const [activities, setActivities] = useState<Activities>([]);
   const [selectedActivity, setSelectedActivity] = useState<
     Activity | undefined
