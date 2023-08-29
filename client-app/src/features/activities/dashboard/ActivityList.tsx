@@ -8,7 +8,6 @@ export const ActivityList: FC<{
   deleteActivity: (id: string) => void;
   submitting: boolean;
 }> = ({ activities, selectActivity, deleteActivity, submitting }) => {
-    
   const [target, setTarget] = useState<string>("");
 
   const handleActivityDelete = (

@@ -7,7 +7,7 @@ import { Activities, Activity } from "../models/activity";
 import { LoadingComponent } from "./LoadingComponent";
 import { NavBar } from "./NavBar";
 
-export const App = () => {
+const App = () => {
   const [activities, setActivities] = useState<Activities>([]);
   const [selectedActivity, setSelectedActivity] = useState<
     Activity | undefined
@@ -75,8 +75,7 @@ export const App = () => {
     agent.ActivitiesRequests.delete(id).then(() => {
       setActivities([...activities.filter((a) => a.id !== id)]);
       setSubmitting(false);
-    })
-    
+    });
   };
 
   if (loading) return <LoadingComponent content="Loading app" />;
@@ -101,3 +100,5 @@ export const App = () => {
     </>
   );
 };
+
+export default App;
