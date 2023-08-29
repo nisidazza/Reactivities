@@ -15,7 +15,7 @@ export default class ActivityStore {
   }
 
   loadActivities = async () => {
-    this.loadingInitial = true;
+    this.setLoadingInitial(true);
     try {
       const activities = await agent.ActivitiesRequests.list();
       activities.forEach((activity) => {
@@ -23,10 +23,15 @@ export default class ActivityStore {
         //mutating state
         this.activities.push(activity);
       });
-      this.loadingInitial = false;
+      this.setLoadingInitial(false);
     } catch (error) {
       console.log(error);
-      this.loadingInitial = false;
+      this.setLoadingInitial(false);
     }
+  };
+
+  //FIX TO: [MobX] Since strict-mode is enabled, changing (observed) observable values without using an action is not allowed. Tried to modify: ActivityStore@1.loadingInitial
+  setLoadingInitial = (state: boolean) => {
+    this.loadingInitial = state;
   };
 }
