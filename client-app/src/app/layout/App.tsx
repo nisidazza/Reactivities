@@ -1,5 +1,6 @@
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { Container } from "semantic-ui-react";
+import { Button, Container } from "semantic-ui-react";
 import { v4 as uuid } from "uuid";
 import { ActivityDashboard } from "../../features/activities/dashboard/ActivityDashboard";
 import agent from "../api/agent";
@@ -87,6 +88,12 @@ const App = () => {
     <>
       <NavBar openForm={handleFormOpen} />
       <Container style={{ marginTop: "7em" }}>
+        <h2>{activityStore.title}</h2>
+        <Button
+          positive
+          content="Add exclamation!"
+          onClick={activityStore.setTitle}
+        />
         <ActivityDashboard
           activities={activities}
           selectedActivity={selectedActivity}
@@ -104,4 +111,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default observer(App);
