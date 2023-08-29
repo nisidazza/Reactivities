@@ -1,13 +1,16 @@
+import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
+import { useStore } from "../../../app/stores/store";
 
 export const ActivityForm: FC<{
-  activity: Activity | undefined;
-  closeForm: () => void;
   createOrEdit: (activity: Activity) => void;
   submitting: boolean;
-}> = ({ activity: selectedActivity, closeForm, createOrEdit, submitting }) => {
+}> = observer(({ createOrEdit, submitting }) => {
+  const { activityStore } = useStore();
+  const { selectedActivity, closeForm } = activityStore;
+
   const initialState = selectedActivity ?? {
     id: "",
     title: "",
@@ -86,4 +89,4 @@ export const ActivityForm: FC<{
       </Form>
     </Segment>
   );
-};
+});
