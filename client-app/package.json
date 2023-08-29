@@ -12,6 +12,8 @@
   "dependencies": {
     "@types/uuid": "^9.0.2",
     "axios": "^0.21.4",
+    "mobx": "^6.10.0",
+    "mobx-react-lite": "^4.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "semantic-ui-css": "^2.5.0",
