@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { Button, Container } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import { v4 as uuid } from "uuid";
 import { ActivityDashboard } from "../../features/activities/dashboard/ActivityDashboard";
 import agent from "../api/agent";
@@ -17,22 +17,11 @@ const App = () => {
     Activity | undefined
   >(undefined);
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    agent.ActivitiesRequests.list()
-      .then((response) => {
-        let activities: Activities = [];
-        response.forEach((activity) => {
-          activity.date = activity.date.split("T")[0];
-          activities.push(activity);
-        });
-        setActivities(activities);
-        setLoading(false);
-      })
-      .catch((error) => console.log(`Error: ${error}`));
-  }, []);
+    activityStore.loadActivities();
+  }, [activityStore]);
 
   const handleSelectActivity = (id: string) => {
     setSelectedActivity(activities.find((activity) => activity.id === id));
@@ -82,20 +71,15 @@ const App = () => {
     });
   };
 
-  if (loading) return <LoadingComponent content="Loading app" />;
+  if (activityStore.loadingInitial)
+    return <LoadingComponent content="Loading app" />;
 
   return (
     <>
       <NavBar openForm={handleFormOpen} />
       <Container style={{ marginTop: "7em" }}>
-        <h2>{activityStore.title}</h2>
-        <Button
-          positive
-          content="Add exclamation!"
-          onClick={activityStore.setTitle}
-        />
         <ActivityDashboard
-          activities={activities}
+          activities={activityStore.activities}
           selectedActivity={selectedActivity}
           selectActivity={handleSelectActivity}
           cancelSelectedActivity={handleCancelSelectedActivity}
