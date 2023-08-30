@@ -5,7 +5,7 @@ import { Activities, Activity } from "../models/activity";
 
 export default class ActivityStore {
   activities: Activities = [];
-  selectedActivity: Activity | undefined = undefined;
+  selectedActivity?: Activity = undefined;
   editMode = false;
   loading = false;
   loadingInitial = false;
@@ -86,6 +86,23 @@ export default class ActivityStore {
         this.loading = false;
       });
     } catch (error) {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
+
+  deleteActivity = async (id: string) => {
+    this.loading = true;
+    try {
+      await agent.ActivitiesRequests.delete(id);
+      runInAction(() => {
+        this.activities = [...this.activities.filter((a) => a.id !== id)];
+        if (this.selectedActivity?.id === id) this.cancelSelectedActivity();
+        this.loading = false;
+      });
+    } catch (error) {
+      console.log(error);
       runInAction(() => {
         this.loading = false;
       });
