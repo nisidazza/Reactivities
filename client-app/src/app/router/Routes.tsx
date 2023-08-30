@@ -24,11 +24,11 @@ export const routes: RouteObject[] = [
       },
       {
         path: "createActivity",
-        element: <ActivityForm />,
+        element: <ActivityForm key="create" />,
       },
       {
         path: "manage/:id",
-        element: <ActivityForm />,
+        element: <ActivityForm key="manage" />,
       },
     ],
   },

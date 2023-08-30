@@ -8,7 +8,7 @@ export default class ActivityStore {
   selectedActivity?: Activity = undefined;
   editMode = false;
   loading = false;
-  loadingInitial = true;
+  loadingInitial = false;
 
   constructor() {
     // we can use makeAutoObservable so we don't need to specify the props
