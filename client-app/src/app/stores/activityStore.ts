@@ -15,6 +15,7 @@ export default class ActivityStore {
     makeAutoObservable(this);
   }
 
+  //computed property (because it has a getter)
   get activitiesByDate() {
     return Array.from(this.activityRegistry.values()).sort(
       (a, b) => Date.parse(a.date) - Date.parse(b.date)
@@ -62,6 +63,8 @@ export default class ActivityStore {
     activity.id = uuid();
     try {
       await agent.ActivitiesRequests.create(activity);
+      // Any threads after await aren't in the same step, so they require action wrapping
+      // Every step that updates observables in an asynchronous process should be marked as action
       runInAction(() => {
         this.activityRegistry.set(activity.id, activity);
         this.selectedActivity = activity;
