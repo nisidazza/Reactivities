@@ -103,7 +103,7 @@ export const ActivityForm = observer(() => {
         />
         <Button
           as={Link}
-          to={`/activities/${activity.id}`}
+          to="/activities"
           floated="right"
           type="button"
           content="Close"
