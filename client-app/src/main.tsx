@@ -1,4 +1,5 @@
 import "react-calendar/dist/Calendar.css";
+import "react-toastify/dist/ReactToastify.min.css"
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
