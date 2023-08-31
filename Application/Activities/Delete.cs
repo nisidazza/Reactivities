@@ -23,6 +23,8 @@ namespace Application.Activities
             {
                 var activity = await _context.Activities.FindAsync(request.Id);
 
+                // without the following line, if we try to delete a non existent activity, we get 
+                // a 500 response error handled by the ExceptionMiddleware
                 if (activity == null) return null; // the ResultObject is going to be null
 
                 _context.Remove(activity);
