@@ -17,10 +17,21 @@ axios.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    const { data, status } = error.response!;
+    const { data, status } = error.response as AxiosResponse;
+    const dataErrors = data.errors;
     switch (status) {
       case 400:
-        toast.error("bad request");
+        if (dataErrors) {
+          const modalStateErrors = [];
+          for (const key in dataErrors) {
+            if (dataErrors[key]) {
+              modalStateErrors.push(dataErrors[key]);
+            }
+          }
+          throw modalStateErrors.flat();
+        } else {
+          toast.error(data);
+        }
         break;
       case 401:
         toast.error("unauthorised");
