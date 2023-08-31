@@ -1,22 +1,9 @@
-import { FC, SyntheticEvent, useState } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
-import { useStore } from "../../../app/stores/store";
 
 export const ActivityListItem: FC<{ activity: Activity }> = ({ activity }) => {
-  const { activityStore } = useStore();
-  const { deleteActivity, loading } = activityStore;
-
-  const [target, setTarget] = useState<string>("");
-
-  const handleActivityDelete = (
-    event: SyntheticEvent<HTMLButtonElement>,
-    id: string
-  ) => {
-    setTarget(event.currentTarget.name);
-    deleteActivity(id);
-  };
   return (
     <Segment.Group>
       <Segment>
@@ -49,14 +36,6 @@ export const ActivityListItem: FC<{ activity: Activity }> = ({ activity }) => {
             color="teal"
             floated="right"
             content="View"
-          />
-          <Button
-            name={activity.id}
-            loading={loading && target === activity.id}
-            floated="right"
-            content="Delete"
-            color="red"
-            onClick={(e) => handleActivityDelete(e, activity.id)}
           />
         </span>
       </Segment>
