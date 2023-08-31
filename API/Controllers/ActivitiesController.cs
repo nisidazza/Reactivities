@@ -15,10 +15,14 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")] // api/activities/{id}
-        public async Task<ActionResult<Activity>> GetActivity(Guid id)
+        public async Task<IActionResult> GetActivity(Guid id)
         {
             //return await _context.Activities.FindAsync(id);
-            return await Mediator.Send(new Details.Query { Id = id });
+            //if we weren't using the CQRS pattern, the best way to handle validation would be:
+            // var activity = await Mediator.Send(new Details.Query { Id = id });
+            // if (activity == null) return NotFound();
+            // return activity;
+            return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
         }
 
         [HttpPost]
