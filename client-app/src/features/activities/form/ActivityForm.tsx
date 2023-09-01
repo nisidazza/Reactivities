@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Segment } from "semantic-ui-react";
 import * as Yup from "yup";
+import { MySelectInput } from "../../../app/common/form/MySelectInput";
 import { MyTextArea } from "../../../app/common/form/MyTextArea";
 import { MyTextInput } from "../../../app/common/form/MyTextInput";
+import { categoryOptions } from "../../../app/common/options/categoryOptions";
 import { LoadingComponent } from "../../../app/layout/LoadingComponent";
 import { Activity } from "../../../app/models/activity";
 import { useStore } from "../../../app/stores/store";
@@ -78,7 +80,11 @@ export const ActivityForm = observer(() => {
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
             <MyTextInput name="title" placeholder="Title" />
             <MyTextArea rows={3} placeholder="Description" name="description" />
-            <MyTextInput placeholder="Category" name="category" />
+            <MySelectInput
+              options={categoryOptions}
+              placeholder="Category"
+              name="category"
+            />
             <MyTextInput placeholder="Date" name="date" />
             <MyTextInput placeholder="City" name="city" />
             <MyTextInput placeholder="Venue" name="venue" />
