@@ -1,8 +1,9 @@
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Segment } from "semantic-ui-react";
+import { Button, FormField, Label, Segment } from "semantic-ui-react";
+import * as Yup from "yup";
 import { LoadingComponent } from "../../../app/layout/LoadingComponent";
 import { Activity } from "../../../app/models/activity";
 import { useStore } from "../../../app/stores/store";
@@ -27,6 +28,10 @@ export const ActivityForm = observer(() => {
     date: "",
     city: "",
     venue: "",
+  });
+
+  const validationSchema = Yup.object({
+    title: Yup.string().required("The activity title is required"),
   });
 
   useEffect(() => {
@@ -57,13 +62,23 @@ export const ActivityForm = observer(() => {
   return (
     <Segment clearing>
       <Formik
+        validationSchema={validationSchema}
         enableReinitialize // activity gets updated when the value changes
         initialValues={activity}
         onSubmit={(values) => console.log(values)}
       >
         {({ values: activity, handleChange, handleSubmit }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
-            <Field placeholder="Title" name="title" />
+            <FormField>
+              <Field placeholder="Title" name="title" />
+              <ErrorMessage
+                name="title"
+                render={(error: string) => (
+                  <Label color="red" content={error} />
+                )}
+              />
+            </FormField>
+
             <Field placeholder="Description" name="description" />
             <Field placeholder="Category" name="category" />
             <Field placeholder="Date" name="date" type="date" />
