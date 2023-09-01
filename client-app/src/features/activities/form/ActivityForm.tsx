@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Segment } from "semantic-ui-react";
 import * as Yup from "yup";
+import { MyTextArea } from "../../../app/common/form/MyTextArea";
 import { MyTextInput } from "../../../app/common/form/MyTextInput";
 import { LoadingComponent } from "../../../app/layout/LoadingComponent";
 import { Activity } from "../../../app/models/activity";
@@ -76,7 +77,7 @@ export const ActivityForm = observer(() => {
         {({ values: activity, handleChange, handleSubmit }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
             <MyTextInput name="title" placeholder="Title" />
-            <MyTextInput placeholder="Description" name="description" />
+            <MyTextArea rows={3} placeholder="Description" name="description" />
             <MyTextInput placeholder="Category" name="category" />
             <MyTextInput placeholder="Date" name="date" />
             <MyTextInput placeholder="City" name="city" />
