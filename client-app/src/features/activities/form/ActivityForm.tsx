@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Segment } from "semantic-ui-react";
 import * as Yup from "yup";
+import { MyDateInput } from "../../../app/common/form/MyDateInput";
 import { MySelectInput } from "../../../app/common/form/MySelectInput";
 import { MyTextArea } from "../../../app/common/form/MyTextArea";
 import { MyTextInput } from "../../../app/common/form/MyTextInput";
@@ -85,7 +86,15 @@ export const ActivityForm = observer(() => {
               placeholder="Category"
               name="category"
             />
-            <MyTextInput placeholder="Date" name="date" />
+            <MyDateInput
+              props={{
+                placeholderText: "Date",
+                name: "Date",
+                showTimeSelect: true,
+                timeCaption: "time",
+                dateFormat: "MMMM d, yyyy h:mm aa",
+              }}
+            />
             <MyTextInput placeholder="City" name="city" />
             <MyTextInput placeholder="Venue" name="venue" />
             <Button
