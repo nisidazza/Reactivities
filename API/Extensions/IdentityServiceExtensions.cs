@@ -11,9 +11,9 @@ namespace API.Extensions
         {
             services.AddIdentityCore<AppUser>(opt =>
             {
-                opt.Password.RequireNonAlphanumeric = false
+                opt.Password.RequireNonAlphanumeric = false;
             })
-            .AddEntityFrameworkStores > DataContext > (); // allows us to query the users in the Entity Framework Store or database
+            .AddEntityFrameworkStores<DataContext>(); // allows us to query the users in the Entity Framework Store or database
 
             services.AddAuthentication();
 
