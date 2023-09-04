@@ -1,0 +1,39 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using Domain;
+using Microsoft.IdentityModel.Tokens;
+
+namespace API.Services
+{
+    public class TokenService
+    {
+        public string CreateToken(AppUser user)
+        {
+            // Claims represent attributes of the subject that are useful in the context of authentication and authorization operations.
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Email, user.Email),
+            };
+
+            // symmetric security key (the same key is used for encryption and decryption )
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("y+t_ysEnRt5qx@Ehx^_s*^nQR-d3t6tT*RJptTxsJxsPkdz%fGjHZncTsVPSFpbS"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = creds,
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+    }
+}
