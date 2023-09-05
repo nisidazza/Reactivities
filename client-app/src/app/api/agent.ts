@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { Activities, Activity } from "../models/activity";
+import { User, UserFormValues } from "../models/user";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
 
@@ -75,8 +76,15 @@ const ActivitiesRequests = {
   delete: (id: string) => axios.delete<void>(`/activities/${id}`),
 };
 
+const AccountRequests = {
+  current: () => requests.get<User>("/account"),
+  login: (user: UserFormValues) => requests.post("/account/login", user),
+  register: (user: UserFormValues) => requests.post("/account/register", user),
+};
+
 const agent = {
   ActivitiesRequests,
+  AccountRequests,
 };
 
 export default agent;
