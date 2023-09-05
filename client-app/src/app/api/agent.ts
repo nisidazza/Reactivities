@@ -78,8 +78,9 @@ const ActivitiesRequests = {
 
 const AccountRequests = {
   current: () => requests.get<User>("/account"),
-  login: (user: UserFormValues) => requests.post("/account/login", user),
-  register: (user: UserFormValues) => requests.post("/account/register", user),
+  login: (user: UserFormValues) => requests.post<User>("/account/login", user),
+  register: (user: UserFormValues) =>
+    requests.post<User>("/account/register", user),
 };
 
 const agent = {
