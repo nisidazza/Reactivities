@@ -21,7 +21,7 @@ export const App = observer(() => {
   }, [commonStore, userStore]);
 
   if (!commonStore.appLoaded)
-    return <LoadingComponent content="Loading App..." />;
+    return <LoadingComponent content="Loading activities..." />;
 
   return (
     <>
