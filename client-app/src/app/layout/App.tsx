@@ -4,6 +4,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { Container } from "semantic-ui-react";
 import { HomePage } from "../../features/home/HomePage";
+import { ModalContainer } from "../common/modals/ModalContainer";
 import { useStore } from "../stores/store";
 import { LoadingComponent } from "./LoadingComponent";
 import { NavBar } from "./NavBar";
@@ -25,6 +26,7 @@ export const App = observer(() => {
 
   return (
     <>
+      <ModalContainer />
       <ToastContainer position="bottom-right" hideProgressBar theme="colored" />
       {location.pathname === "/" ? (
         <HomePage />
