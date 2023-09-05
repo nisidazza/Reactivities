@@ -20,7 +20,7 @@ namespace API.Extensions
             .AddEntityFrameworkStores<DataContext>(); // allows us to query the users in the Entity Framework Store or database
 
             // for now it has to match the key we use to sign-in (in the TokenService) so the API can decrypt it!!!
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("y+t_ysEnRt5qx@Ehx^_s*^nQR-d3t6tT*RJptTxsJxsPkdz%fGjHZncTsVPSFpbS"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>

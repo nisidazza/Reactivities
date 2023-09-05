@@ -9,6 +9,12 @@ namespace API.Services
 {
     public class TokenService
     {
+        private readonly IConfiguration _config;
+        public TokenService(IConfiguration config)
+        {
+            _config = config;
+
+        }
         public string CreateToken(AppUser user)
         {
             // Claims represent attributes of the subject that are useful in the context of authentication and authorization operations.
@@ -20,7 +26,7 @@ namespace API.Services
             };
 
             // symmetric security key (the same key is used for encryption and decryption )
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("y+t_ysEnRt5qx@Ehx^_s*^nQR-d3t6tT*RJptTxsJxsPkdz%fGjHZncTsVPSFpbS"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
