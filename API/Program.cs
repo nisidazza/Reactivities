@@ -29,6 +29,7 @@ if (app.Environment.IsDevelopment())
 
 // Middleware to apply the cors header to the response - the name needs to match the one in services
 app.UseCors("CorsPolicy");
+//must come first authorization!!!
 app.UseAuthentication();
 app.UseAuthorization();
 
