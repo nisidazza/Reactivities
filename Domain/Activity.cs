@@ -17,6 +17,9 @@ namespace Domain
 
         public string Venue { get; set; }
 
+        public bool IsCancelled { get; set; }
+
+
         // this avoids getting a null reference when we add something to this collection
         public ICollection<ActivityAttendee> Attendees { get; set; } = new List<ActivityAttendee>();
     }
