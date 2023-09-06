@@ -1,11 +1,9 @@
 using Application.Activities;
 using Domain;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [AllowAnonymous] //TODO: remove once client side login is done 
     public class ActivitiesController : BaseApiController
     {
         //endpoint
