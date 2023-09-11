@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { makeAutoObservable, runInAction } from "mobx";
 import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
-import { Activities, Activity } from "../models/activity";
+import { Activities, Activity, ActivityFormValues } from "../models/activity";
 import { Profile } from "../models/profile";
 import { store } from "./store";
 
@@ -95,41 +95,44 @@ export default class ActivityStore {
     this.loadingInitial = state;
   };
 
-  createActivity = async (activity: Activity) => {
-    this.loading = true;
+  createActivity = async (activity: ActivityFormValues) => {
+    const user = store.userStore.user;
+    const attendee = new Profile(user!);
+
     activity.id = uuid();
     try {
       await agent.ActivitiesRequests.create(activity);
+      const newActivity = new Activity(activity);
+      newActivity.hostUsername = user!.username;
+      newActivity.attendees = [attendee];
+      //get all the property from the setActivity method
+      this.setActivity(newActivity);
       // Any threads after await aren't in the same step, so they require action wrapping
       // Every step that updates observables in an asynchronous process should be marked as action
       runInAction(() => {
-        this.activityRegistry.set(activity.id, activity);
-        this.selectedActivity = activity;
-        this.editMode = false;
-        this.loading = false;
+        this.selectedActivity = newActivity;
       });
     } catch (error) {
       console.log(error);
-      runInAction(() => {
-        this.loading = false;
-      });
     }
   };
 
-  updateActivity = async (activity: Activity) => {
+  updateActivity = async (activity: ActivityFormValues) => {
     this.loading = true;
     try {
       await agent.ActivitiesRequests.update(activity);
       runInAction(() => {
-        this.activityRegistry.set(activity.id, activity);
-        this.selectedActivity = activity;
-        this.editMode = false;
-        this.loading = false;
+        if (activity.id) {
+          let updatedActivity = {
+            ...this.getActivity(activity.id),
+            ...activity,
+          };
+          this.activityRegistry.set(activity.id, updatedActivity as Activity);
+          this.selectedActivity = updatedActivity as Activity;
+        }
       });
     } catch (error) {
-      runInAction(() => {
-        this.loading = false;
-      });
+      console.log(error);
     }
   };
 
