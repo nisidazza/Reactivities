@@ -1,3 +1,5 @@
+import { Profile } from "./profile";
+
 export type Activity = {
   id: string;
   title: string;
@@ -6,6 +8,9 @@ export type Activity = {
   category: string;
   city: string;
   venue: string;
+  hostUsername?: string;
+  isCancelled?: boolean;
+  attendees?: Profile[];
 };
 
 export type Activities = Activity[];

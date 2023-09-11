@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
+import { ActivityListItemAttendee } from "./ActivityListItemAttendee";
 
 export const ActivityListItem: FC<{ activity: Activity }> = ({ activity }) => {
   return (
@@ -27,7 +28,9 @@ export const ActivityListItem: FC<{ activity: Activity }> = ({ activity }) => {
           {activity.venue}
         </span>
       </Segment>
-      <Segment secondary>Attendees go here</Segment>
+      <Segment secondary>
+        <ActivityListItemAttendee attendees={activity.attendees!} />
+      </Segment>
       <Segment clearing>
         <span>
           {activity.description}
