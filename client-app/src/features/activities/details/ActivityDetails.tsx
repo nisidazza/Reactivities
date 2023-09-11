@@ -7,7 +7,7 @@ import { useStore } from "../../../app/stores/store";
 import { ActivityDetailedChat } from "./ActivityDetailedChat";
 import { ActivityDetailedHeader } from "./ActivityDetailedHeader";
 import { ActivityDetailedInfo } from "./ActivityDetailedInfo";
-import { ActivityDetailedSidebar } from "./ActivityDetailedSideBar";
+import { ActivityDetailedSidebar } from "./ActivityDetailedSidebar";
 
 export const ActivityDetails = observer(() => {
   const { activityStore } = useStore();
@@ -34,7 +34,7 @@ export const ActivityDetails = observer(() => {
         <ActivityDetailedChat />
       </Grid.Column>
       <Grid.Column width={6}>
-        <ActivityDetailedSidebar />
+        <ActivityDetailedSidebar attendees={activity.attendees!} />
       </Grid.Column>
     </Grid>
   );
