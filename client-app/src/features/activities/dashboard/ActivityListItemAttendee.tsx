@@ -2,10 +2,10 @@ import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Image, List } from "semantic-ui-react";
-import { Profile } from "../../../app/models/profile";
+import { IProfile } from "../../../app/models/profile";
 import { useStore } from "../../../app/stores/store";
 
-export const ActivityListItemAttendee: FC<{ attendees: Profile[] }> = observer(
+export const ActivityListItemAttendee: FC<{ attendees: IProfile[] }> = observer(
   ({ attendees }) => {
     const {} = useStore();
 

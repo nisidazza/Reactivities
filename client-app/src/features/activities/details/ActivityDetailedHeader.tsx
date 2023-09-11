@@ -4,6 +4,7 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Button, Header, Image, Item, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
+import { useStore } from "../../../app/stores/store";
 
 const activityImageStyle = {
   filter: "brightness(30%)",
@@ -20,6 +21,9 @@ const activityImageTextStyle = {
 
 export const ActivityDetailedHeader: FC<{ activity: Activity }> = observer(
   ({ activity }) => {
+    const {
+      activityStore: { updateAttendance, loading },
+    } = useStore();
     return (
       <Segment.Group>
         <Segment basic attached="top" style={{ padding: "0" }}>
@@ -61,10 +65,14 @@ export const ActivityDetailedHeader: FC<{ activity: Activity }> = observer(
             >
               Manage Event
             </Button>
-          ) : activity.isGoing ? (
-            <Button>Cancel attendance</Button>
           ) : (
-            <Button color="teal">Join Activity</Button>
+            <Button
+              loading={loading}
+              onClick={updateAttendance}
+              color={activity.isGoing ? "grey" : "teal"}
+            >
+              {activity.isGoing ? "Cancel attendance" : "Join Activity"}
+            </Button>
           )}
         </Segment>
       </Segment.Group>

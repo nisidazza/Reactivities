@@ -1,4 +1,4 @@
-import { Profile } from "./profile";
+import { IProfile } from "./profile";
 
 export type Activity = {
   id: string;
@@ -12,8 +12,8 @@ export type Activity = {
   isCancelled?: boolean;
   isGoing?: boolean;
   isHost?: boolean;
-  host?: Profile;
-  attendees?: Profile[];
+  host?: IProfile;
+  attendees?: IProfile[];
 };
 
 export type Activities = Activity[];
