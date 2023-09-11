@@ -2,10 +2,11 @@ import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Image, Item, Label, List, Segment } from "semantic-ui-react";
-import { Profile } from "../../../app/models/profile";
+import { Activity } from "../../../app/models/activity";
 
-export const ActivityDetailedSidebar: FC<{ attendees: Profile[] }> = observer(
-  ({ attendees }) => {
+export const ActivityDetailedSidebar: FC<{ activity: Activity }> = observer(
+  ({ activity: { attendees, host } }) => {
+    if (!attendees) return null;
     return (
       <>
         <Segment
@@ -23,13 +24,15 @@ export const ActivityDetailedSidebar: FC<{ attendees: Profile[] }> = observer(
           <List relaxed divided>
             {attendees.map((attendee) => (
               <Item style={{ position: "relative" }} key={attendee.username}>
-                <Label
-                  style={{ position: "absolute" }}
-                  color="orange"
-                  ribbon="right"
-                >
-                  Host
-                </Label>
+                {attendee.username === host?.username && (
+                  <Label
+                    style={{ position: "absolute" }}
+                    color="orange"
+                    ribbon="right"
+                  >
+                    Host
+                  </Label>
+                )}
                 <Image size="tiny" src={attendee.image || "/assets/user.png"} />
                 <Item.Content verticalAlign="middle">
                   <Item.Header as="h3">
