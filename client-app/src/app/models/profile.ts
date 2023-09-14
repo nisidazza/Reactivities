@@ -5,6 +5,7 @@ export interface IProfile {
   displayName: string;
   image?: string;
   bio?: string;
+  photos?: Photo[];
 }
 
 // set properties based on the currently logged in user
@@ -18,4 +19,11 @@ export class Profile implements IProfile {
   username: string;
   displayName: string;
   image?: string;
+  photos?: Photo[];
+}
+
+export interface Photo {
+  id: string;
+  url: string;
+  isMain: boolean;
 }
