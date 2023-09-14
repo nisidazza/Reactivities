@@ -1,20 +1,45 @@
 import { observer } from "mobx-react-lite";
-import { FC } from "react";
-import { Card, Header, Image, Tab } from "semantic-ui-react";
+import { FC, useState } from "react";
+import { Button, Card, Grid, Header, Image, Tab } from "semantic-ui-react";
 import { Profile } from "../../app/models/profile";
+import { useStore } from "../../app/stores/store";
+import { PhotoUploadWidget } from "../../app/common/imageUpload/PhotoUploadWidget";
 
 export const ProfilePhotos: FC<{ profile: Profile }> = observer(
   ({ profile }) => {
+    const {
+      profileStore: { isCurrentUser },
+    } = useStore();
+    const [addPhotoMode, setAddPhotoMode] = useState(false);
+
     return (
       <Tab.Pane>
-        <Header icon="image" content="Photos" />
-        <Card.Group itemsPerRow={5}>
-          {profile.photos?.map((photo) => (
-            <Card key={photo.id}>
-              <Image src={photo.url} />
-            </Card>
-          ))}
-        </Card.Group>
+        <Grid>
+          <Grid.Column width={16}>
+            <Header icon="image" content="Photos" floated="left" />
+            {isCurrentUser && (
+              <Button
+                floated="right"
+                basic
+                content={addPhotoMode ? "Cancel" : "Add photo"}
+                onClick={() => setAddPhotoMode(!addPhotoMode)}
+              />
+            )}
+          </Grid.Column>
+          <Grid.Column width={16}>
+            {addPhotoMode ? (
+              <PhotoUploadWidget />
+            ) : (
+              <Card.Group itemsPerRow={5}>
+                {profile.photos?.map((photo) => (
+                  <Card key={photo.id}>
+                    <Image src={photo.url} />
+                  </Card>
+                ))}
+              </Card.Group>
+            )}
+          </Grid.Column>
+        </Grid>
       </Tab.Pane>
     );
   }
