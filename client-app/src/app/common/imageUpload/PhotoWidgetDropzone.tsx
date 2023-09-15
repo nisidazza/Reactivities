@@ -22,6 +22,7 @@ export const PhotoWidgetDropzone: FC<{ setFiles: (files: any) => void }> = ({
     (acceptedFiles: any) => {
       setFiles(
         acceptedFiles.map((file: any) =>
+          // *we need to dispose of URL.createObjectURL(file) otherwise it's going to persist in the client memory
           Object.assign(file, { preview: URL.createObjectURL(file) })
         )
       );
