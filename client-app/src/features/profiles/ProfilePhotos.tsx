@@ -1,16 +1,20 @@
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
 import { Button, Card, Grid, Header, Image, Tab } from "semantic-ui-react";
+import { PhotoUploadWidget } from "../../app/common/imageUpload/PhotoUploadWidget";
 import { Profile } from "../../app/models/profile";
 import { useStore } from "../../app/stores/store";
-import { PhotoUploadWidget } from "../../app/common/imageUpload/PhotoUploadWidget";
 
 export const ProfilePhotos: FC<{ profile: Profile }> = observer(
   ({ profile }) => {
     const {
-      profileStore: { isCurrentUser },
+      profileStore: { isCurrentUser, uploadPhoto , uploading},
     } = useStore();
     const [addPhotoMode, setAddPhotoMode] = useState(false);
+
+    const handlePhotoUpload = (file: Blob) => {
+      uploadPhoto(file).then(() => setAddPhotoMode(false));
+    };
 
     return (
       <Tab.Pane>
@@ -28,7 +32,7 @@ export const ProfilePhotos: FC<{ profile: Profile }> = observer(
           </Grid.Column>
           <Grid.Column width={16}>
             {addPhotoMode ? (
-              <PhotoUploadWidget />
+              <PhotoUploadWidget uploadPhoto={handlePhotoUpload} loading={uploading}/>
             ) : (
               <Card.Group itemsPerRow={5}>
                 {profile.photos?.map((photo) => (
