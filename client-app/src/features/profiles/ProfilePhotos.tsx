@@ -14,6 +14,7 @@ export const ProfilePhotos: FC<{ profile: Profile }> = observer(
         uploading,
         loading,
         setMainPhoto,
+        deletePhoto,
       },
     } = useStore();
     const [addPhotoMode, setAddPhotoMode] = useState(false);
@@ -29,6 +30,14 @@ export const ProfilePhotos: FC<{ profile: Profile }> = observer(
     ) => {
       setTarget(e.currentTarget.name);
       setMainPhoto(photo);
+    };
+
+    const handleDeletePhoto = (
+      photo: Photo,
+      e: SyntheticEvent<HTMLButtonElement>
+    ) => {
+      setTarget(e.currentTarget.name);
+      deletePhoto(photo);
     };
 
     return (
@@ -62,12 +71,20 @@ export const ProfilePhotos: FC<{ profile: Profile }> = observer(
                           basic
                           color="green"
                           content="Main"
-                          name={photo.id}
                           disabled={photo.isMain}
-                          loading={target === photo.id && loading}
+                          loading={target === "main" + photo.id && loading}
+                          name={"main" + photo.id}
                           onClick={(e) => handleSetMainPhoto(photo, e)}
                         />
-                        <Button basic color="red" icon="trash" />
+                        <Button
+                          basic
+                          color="red"
+                          disabled={photo.isMain}
+                          icon="trash"
+                          loading={target === photo.id && loading}
+                          name={photo.id}
+                          onClick={(e) => handleDeletePhoto(photo, e)}
+                        />
                       </Button.Group>
                     )}
                   </Card>
