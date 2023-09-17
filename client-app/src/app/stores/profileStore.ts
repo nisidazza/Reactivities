@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Photo, Profile } from "../models/profile";
+import { IProfile, Photo, Profile } from "../models/profile";
 import { store } from "./store";
 
 export default class ProfileStore {
@@ -33,7 +33,7 @@ export default class ProfileStore {
     }
   };
 
-  updateProfile = async (profile: Partial<Profile>) => {
+  updateProfile = async (profile: Partial<IProfile>) => {
     this.loading = true;
     try {
       await agent.ProfilesRequests.update(profile);

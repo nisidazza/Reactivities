@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { Activities, Activity, ActivityFormValues } from "../models/activity";
-import { Photo, Profile } from "../models/profile";
+import { IProfile, Photo } from "../models/profile";
 import { User, UserFormValues } from "../models/user";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
@@ -93,7 +93,7 @@ const AccountRequests = {
 };
 
 const ProfilesRequests = {
-  get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+  get: (username: string) => requests.get<IProfile>(`/profiles/${username}`),
   uploadPhoto: (file: Blob) => {
     let formData = new FormData();
     // needs to match the name of the property in the API
@@ -106,8 +106,10 @@ const ProfilesRequests = {
     requests.post<void>(`/photos/${id}/setMain`, {});
   },
   deletePhoto: (id: string) => requests.del<void>(`/photos/${id}`),
-  update: (profile: Partial<Profile>) =>
-    requests.put<Partial<Profile>>(`profiles/${profile.username}`, {profile}),
+  update: (profile: Partial<IProfile>) =>
+    requests.put<Partial<IProfile>>(`profiles/${profile.username}`, {
+      profile,
+    }),
 };
 
 const agent = {
