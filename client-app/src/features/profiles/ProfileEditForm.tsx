@@ -19,7 +19,6 @@ export const ProfileEditForm: FC<{ setEditMode: (editMode: boolean) => void }> =
 
     return (
       <Formik
-        enableReinitialize
         initialValues={{
           displayName: profile?.displayName,
           bio: profile?.bio,
@@ -31,9 +30,9 @@ export const ProfileEditForm: FC<{ setEditMode: (editMode: boolean) => void }> =
         }
         validationSchema={validationSchema}
       >
-        {({ isSubmitting, isValid, dirty }) => {
+        {({ handleSubmit, isSubmitting, isValid, dirty }) => {
           return (
-            <Form className="ui form" autoComplete="off">
+            <Form className="ui form" onSubmit={handleSubmit}>
               <MyTextInput name="displayName" placeholder="Display Name" />
               <MyTextArea rows={3} placeholder="Bio" name="bio" />
               <Button

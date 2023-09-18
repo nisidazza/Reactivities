@@ -25,8 +25,10 @@ export default class ProfileStore {
     this.loadingProfile = true;
     try {
       const profile = await agent.ProfilesRequests.get(username);
-      this.profile = profile;
-      this.loadingProfile = false;
+      runInAction(() => {
+        this.profile = profile;
+        this.loadingProfile = false;
+      });
     } catch (error) {
       console.log(error);
       runInAction(() => (this.loadingProfile = false));

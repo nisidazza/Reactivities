@@ -11,11 +11,11 @@ export const ProfileCard: FC<{ profile: IProfile }> = observer(
         <Image src={profile.image || "/assets/user.png"} />
         <Card.Content>
           <Card.Header>{profile.displayName}</Card.Header>
-          <Card.Description>Bio goes here</Card.Description>
+          <Card.Description>{profile.bio}</Card.Description>
         </Card.Content>
         <Card.Content>
-            <Icon name="user"/>
-            20 followers
+          <Icon name="user" />
+          20 followers
         </Card.Content>
       </Card>
     );

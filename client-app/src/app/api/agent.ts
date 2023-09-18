@@ -107,9 +107,7 @@ const ProfilesRequests = {
   },
   deletePhoto: (id: string) => requests.del<void>(`/photos/${id}`),
   update: (profile: Partial<IProfile>) =>
-    requests.put<Partial<IProfile>>(`profiles/${profile.username}`, {
-      profile,
-    }),
+    requests.put<Partial<IProfile>>(`/profiles`, profile),
 };
 
 const agent = {
