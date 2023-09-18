@@ -22,5 +22,7 @@ namespace Domain
 
         // this avoids getting a null reference when we add something to this collection
         public ICollection<ActivityAttendee> Attendees { get; set; } = new List<ActivityAttendee>();
+
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
