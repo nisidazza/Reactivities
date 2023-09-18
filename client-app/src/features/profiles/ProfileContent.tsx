@@ -2,17 +2,25 @@ import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Tab } from "semantic-ui-react";
 import { Profile } from "../../app/models/profile";
+import { ProfileAbout } from "./ProfileAbout";
 import { ProfilePhotos } from "./ProfilePhotos";
 
 export const ProfileContent: FC<{ profile: Profile }> = observer(
   ({ profile }) => {
     const panes = [
-      { menuItem: "About", render: () => <Tab.Pane>About Content</Tab.Pane> },
+      {
+        menuItem: "About",
+        render: () => (
+          <Tab.Pane>
+            <ProfileAbout />
+          </Tab.Pane>
+        ),
+      },
       {
         menuItem: "Photos",
         render: () => (
           <Tab.Pane>
-            <ProfilePhotos profile={profile}/>
+            <ProfilePhotos profile={profile} />
           </Tab.Pane>
         ),
       },

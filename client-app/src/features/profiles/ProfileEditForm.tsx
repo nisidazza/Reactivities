@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
-import { Button, Form, Header, Segment } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 import * as Yup from "yup";
 import { MyTextArea } from "../../app/common/form/MyTextArea";
 import { MyTextInput } from "../../app/common/form/MyTextInput";
@@ -18,38 +18,35 @@ export const ProfileEditForm: FC<{ setEditMode: (editMode: boolean) => void }> =
     });
 
     return (
-      <Segment>
-        <Header content="Profile Details" sub color="teal" />
-        <Formik
-          enableReinitialize
-          initialValues={{
-            displayName: profile?.displayName,
-            bio: profile?.bio,
-          }}
-          onSubmit={(values) =>
-            updateProfile(values).then(() => {
-              setEditMode(false);
-            })
-          }
-          validationSchema={validationSchema}
-        >
-          {({ isSubmitting, isValid, dirty }) => {
-            return (
-              <Form className="ui form" autoComplete="off">
-                <MyTextInput name="displayName" placeholder="Display Name" />
-                <MyTextArea rows={3} placeholder="Bio" name="bio" />
-                <Button
-                  disabled={!isValid || !dirty}
-                  loading={isSubmitting}
-                  floated="right"
-                  positive
-                  type="submit"
-                  content="Update profile"
-                />
-              </Form>
-            );
-          }}
-        </Formik>
-      </Segment>
+      <Formik
+        enableReinitialize
+        initialValues={{
+          displayName: profile?.displayName,
+          bio: profile?.bio,
+        }}
+        onSubmit={(values) =>
+          updateProfile(values).then(() => {
+            setEditMode(false);
+          })
+        }
+        validationSchema={validationSchema}
+      >
+        {({ isSubmitting, isValid, dirty }) => {
+          return (
+            <Form className="ui form" autoComplete="off">
+              <MyTextInput name="displayName" placeholder="Display Name" />
+              <MyTextArea rows={3} placeholder="Bio" name="bio" />
+              <Button
+                disabled={!isValid || !dirty}
+                loading={isSubmitting}
+                floated="right"
+                positive
+                type="submit"
+                content="Update profile"
+              />
+            </Form>
+          );
+        }}
+      </Formik>
     );
   });

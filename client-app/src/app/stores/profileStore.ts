@@ -4,7 +4,7 @@ import { IProfile, Photo, Profile } from "../models/profile";
 import { store } from "./store";
 
 export default class ProfileStore {
-  profile: Profile | null = null;
+  profile: IProfile | null = null;
   loadingProfile = false;
   uploading = false;
   loading = false;
