@@ -55,4 +55,13 @@ export default class CommentStore {
     this.comments = [];
     this.stopHubConnection();
   };
+
+  addComments = async (values: { body: string; activityId?: string }) => {
+    values.activityId = store.activityStore.selectedActivity?.id;
+    try {
+      await this.hubConnection?.invoke("SendComment", values); // needs to match the name of the method in ChatHub.cs
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
