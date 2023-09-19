@@ -1,9 +1,10 @@
-import { Form, Formik } from "formik";
+import { formatDistanceToNow } from "date-fns";
+import { Field, FieldProps, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button, Comment, Header, Segment } from "semantic-ui-react";
-import { MyTextArea } from "../../../app/common/form/MyTextArea";
+import { Comment, Header, Loader, Segment } from "semantic-ui-react";
+import * as Yup from "yup";
 import { useStore } from "../../../app/stores/store";
 
 export const ActivityDetailedChat: FC<{ activityId: string }> = observer(
@@ -31,6 +32,40 @@ export const ActivityDetailedChat: FC<{ activityId: string }> = observer(
           <Header>Chat about this event</Header>
         </Segment>
         <Segment attached clearing>
+          <Formik
+            initialValues={{ body: "" }}
+            onSubmit={(values, { resetForm }) =>
+              commentStore.addComments(values).then(() => resetForm())
+            }
+            validationSchema={Yup.object({ body: Yup.string().required() })}
+          >
+            {({ handleSubmit, isSubmitting, isValid }) => (
+              <Form className="ui form">
+                <Field name="body">
+                  {(props: FieldProps) => (
+                    <div style={{ position: "relative" }}>
+                      <Loader active={isSubmitting} />
+                      <textarea
+                        placeholder="Enter your comment (Enter to submit, SHIFT + enter for new line)"
+                        rows={2}
+                        {...props.field}
+                        onKeyDown={(e) => {
+                          //add new line in the text area
+                          if (e.key === "Enter" && e.shiftKey) {
+                            return;
+                          }
+                          if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            isValid && handleSubmit();
+                          }
+                        }}
+                      ></textarea>
+                    </div>
+                  )}
+                </Field>
+              </Form>
+            )}
+          </Formik>
           <Comment.Group>
             {commentStore.comments.map((comment) => (
               <Comment key={comment.id}>
@@ -43,34 +78,14 @@ export const ActivityDetailedChat: FC<{ activityId: string }> = observer(
                     {comment.displayName}
                   </Comment.Author>
                   <Comment.Metadata>
-                    <div>{comment.createdAt}</div>
+                    <div>{formatDistanceToNow(comment.createdAt)} ago</div>
                   </Comment.Metadata>
-                  <Comment.Text>{comment.body}</Comment.Text>
+                  <Comment.Text style={{ whiteSpace: "pre-wrap" }}>
+                    {comment.body}
+                  </Comment.Text>
                 </Comment.Content>
               </Comment>
             ))}
-            <Formik
-              initialValues={{ body: "" }}
-              onSubmit={(values, { resetForm }) =>
-                commentStore.addComments(values).then(() => resetForm())
-              }
-            >
-              {({ isSubmitting, isValid }) => (
-                <Form className="ui form">
-                  <MyTextArea placeholder="Add comment" name="body" rows={2} />
-                  <Button
-                    loading={isSubmitting}
-                    disabled={isSubmitting || !isValid}
-                    content="Add Reply"
-                    labelPosition="left"
-                    icon="edit"
-                    primary
-                    type="submit"
-                    floated="right"
-                  />
-                </Form>
-              )}
-            </Formik>
           </Comment.Group>
         </Segment>
       </>

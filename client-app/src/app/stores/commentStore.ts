@@ -35,12 +35,21 @@ export default class CommentStore {
 
       // load all comments from that activity - the method name needs to match the name in ChatHub.cs
       this.hubConnection.on("LoadComments", (comments: ChatComment[]) => {
-        runInAction(() => (this.comments = comments)); //update observable
+        runInAction(() => {
+          comments.forEach((comment) => {
+            // comments coming from the Db are not in UTC format
+            comment.createdAt = new Date(comment.createdAt + "Z");
+          });
+          this.comments = comments;
+        }); //update observable
       });
 
       // receive comment
       this.hubConnection.on("ReceiveComment", (comment: ChatComment) => {
-        runInAction(() => this.comments.push(comment));
+        runInAction(() => {
+          comment.createdAt = new Date(comment.createdAt);
+          this.comments.unshift(comment);
+        });
       });
     }
   };
