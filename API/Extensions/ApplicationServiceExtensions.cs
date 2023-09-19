@@ -41,6 +41,7 @@ namespace API.Extensions
             services.AddScoped<IUserAccessor, UserAccessor>(); // thanks to this we can inject it inside the Application handlers
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary")); // need to match the name in the appsettings.json
+            services.AddSignalR();
 
             return services;
         }
