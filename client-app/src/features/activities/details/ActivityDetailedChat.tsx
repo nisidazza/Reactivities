@@ -1,59 +1,65 @@
 import { observer } from "mobx-react-lite";
+import { FC, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button, Comment, Form, Header, Segment } from "semantic-ui-react";
+import { useStore } from "../../../app/stores/store";
 
-export const ActivityDetailedChat = observer(() => {
-  return (
-    <>
-      <Segment
-        textAlign="center"
-        attached="top"
-        inverted
-        color="teal"
-        style={{ border: "none" }}
-      >
-        <Header>Chat about this event</Header>
-      </Segment>
-      <Segment attached>
-        <Comment.Group>
-          <Comment>
-            <Comment.Avatar src="/assets/user.png" />
-            <Comment.Content>
-              <Comment.Author as="a">Matt</Comment.Author>
-              <Comment.Metadata>
-                <div>Today at 5:42PM</div>
-              </Comment.Metadata>
-              <Comment.Text>How artistic!</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
+export const ActivityDetailedChat: FC<{ activityId: string }> = observer(
+  ({ activityId }) => {
+    const { commentStore } = useStore();
 
-          <Comment>
-            <Comment.Avatar src="/assets/user.png" />
-            <Comment.Content>
-              <Comment.Author as="a">Joe Henderson</Comment.Author>
-              <Comment.Metadata>
-                <div>5 days ago</div>
-              </Comment.Metadata>
-              <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
+    useEffect(() => {
+      if (activityId) {
+        commentStore.createHubConnection(activityId);
+      }
+      return () => {
+        commentStore.clearComments();
+      };
+    }, [activityId]);
 
-          <Form reply>
-            <Form.TextArea />
-            <Button
-              content="Add Reply"
-              labelPosition="left"
-              icon="edit"
-              primary
-            />
-          </Form>
-        </Comment.Group>
-      </Segment>
-    </>
-  );
-});
+    return (
+      <>
+        <Segment
+          textAlign="center"
+          attached="top"
+          inverted
+          color="teal"
+          style={{ border: "none" }}
+        >
+          <Header>Chat about this event</Header>
+        </Segment>
+        <Segment attached>
+          <Comment.Group>
+            {commentStore.comments.map((comment) => (
+              <Comment key={comment.id}>
+                <Comment.Avatar src={comment.image || "/assets/user.png"} />
+                <Comment.Content>
+                  <Comment.Author
+                    as={Link}
+                    to={`/profiles/${comment.username}`}
+                  >
+                    {comment.displayName}
+                  </Comment.Author>
+                  <Comment.Metadata>
+                    <div>{comment.createdAt}</div>
+                  </Comment.Metadata>
+                  <Comment.Text>{comment.body}</Comment.Text>
+                </Comment.Content>
+              </Comment>
+            ))}
+
+            <Form reply>
+              <Form.TextArea />
+              <Button
+                content="Add Reply"
+                labelPosition="left"
+                icon="edit"
+                primary
+              />
+            </Form>
+          </Comment.Group>
+        </Segment>
+      </>
+    );
+  }
+);
