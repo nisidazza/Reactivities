@@ -17,7 +17,9 @@ namespace Persistence
 
         public DbSet<Photo> Photos { get; set; } // if we need to query the photo collection directly from the data context
 
-        public DbSet<Comment> Comments { get; set; } 
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<UserFollowing> UserFollowings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,13 +38,28 @@ namespace Persistence
                 .HasOne(u => u.Activity)
                 .WithMany(a => a.Attendees)
                 .HasForeignKey(aa => aa.ActivityId);
-            
+
             //Entity Framework restricts the delete behaviour between user/comments and activity/comments. If a user or an actvity is deleted, the comments won't be.
             // Change the above behaviour manually so that when an activity is deleted , all the related comments are too.
             builder.Entity<Comment>()
             .HasOne(a => a.Activity)
             .WithMany(c => c.Comments)
             .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserFollowing>(b =>
+            {
+                b.HasKey(k => new { k.ObserverId, k.TargetId });
+
+                b.HasOne(o => o.Observer)
+                .WithMany(f => f.Followings)
+                .HasForeignKey(o => o.ObserverId)
+                .OnDelete(DeleteBehavior.Cascade); // if a user profile is deleted, also its entries in the user following table are deleted
+
+                b.HasOne(o => o.Target)
+               .WithMany(f => f.Followers)
+               .HasForeignKey(o => o.TargetId)
+               .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }
