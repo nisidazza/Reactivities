@@ -15,7 +15,7 @@ export const ProfileCard: FC<{ profile: IProfile }> = observer(
         </Card.Content>
         <Card.Content>
           <Icon name="user" />
-          20 followers
+          {profile.followersCount}
         </Card.Content>
       </Card>
     );

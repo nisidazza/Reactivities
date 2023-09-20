@@ -3,13 +3,14 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Image, List, Popup } from "semantic-ui-react";
 import { IProfile } from "../../../app/models/profile";
-import { useStore } from "../../../app/stores/store";
 import { ProfileCard } from "../../profiles/ProfileCard";
 
 export const ActivityListItemAttendee: FC<{ attendees: IProfile[] }> = observer(
   ({ attendees }) => {
-    const {} = useStore();
-
+    const styles = {
+      borderColor: "orange",
+      borderWidth: 2,
+    };
     return (
       <List horizontal>
         {attendees.map((attendee) => (
@@ -26,6 +27,8 @@ export const ActivityListItemAttendee: FC<{ attendees: IProfile[] }> = observer(
                   size="mini"
                   circular
                   src={attendee.image || "/assets/user.png"}
+                  bordered
+                  style={attendee.following ? styles : null}
                 />
               </List.Item>
             }
