@@ -8,8 +8,8 @@ import { ProfileCard } from "../../profiles/ProfileCard";
 export const ActivityListItemAttendee: FC<{ attendees: IProfile[] }> = observer(
   ({ attendees }) => {
     const styles = {
-      borderColor: "orange",
-      borderWidth: 2,
+      borderColor: "#ebc83d",
+      borderWidth: 3,
     };
     return (
       <List horizontal>

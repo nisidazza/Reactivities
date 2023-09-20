@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Card, Icon, Image } from "semantic-ui-react";
 import { IProfile } from "../../app/models/profile";
+import { FollowButton } from "./FollowButton";
 
 export const ProfileCard: FC<{ profile: IProfile }> = observer(
   ({ profile }) => {
@@ -15,8 +16,10 @@ export const ProfileCard: FC<{ profile: IProfile }> = observer(
         </Card.Content>
         <Card.Content>
           <Icon name="user" />
-          {profile.followersCount}
+          {profile.followersCount}{" "}
+          {profile.followersCount === 1 ? "Follower" : "Followers"}
         </Card.Content>
+        <FollowButton profile={profile} />
       </Card>
     );
   }
