@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Tab } from "semantic-ui-react";
 import { Profile } from "../../app/models/profile";
 import { ProfileAbout } from "./ProfileAbout";
+import { ProfileFollowings } from "./ProfileFollowings";
 import { ProfilePhotos } from "./ProfilePhotos";
 
 export const ProfileContent: FC<{ profile: Profile }> = observer(
@@ -27,11 +28,19 @@ export const ProfileContent: FC<{ profile: Profile }> = observer(
       { menuItem: "Events", render: () => <Tab.Pane>Events Content</Tab.Pane> },
       {
         menuItem: "Followers",
-        render: () => <Tab.Pane>Followers Content</Tab.Pane>,
+        render: () => (
+          <Tab.Pane>
+            <ProfileFollowings />
+          </Tab.Pane>
+        ),
       },
       {
         menuItem: "Following",
-        render: () => <Tab.Pane>Following Content</Tab.Pane>,
+        render: () => (
+          <Tab.Pane>
+            <ProfileFollowings />
+          </Tab.Pane>
+        ),
       },
     ];
 

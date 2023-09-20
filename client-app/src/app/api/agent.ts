@@ -110,6 +110,8 @@ const ProfilesRequests = {
     requests.put<Partial<IProfile>>(`/profiles`, profile),
   updateFollowing: (username: string) =>
     requests.post(`/follow/${username}`, {}),
+  listFollowings: (username: string, predicate: string) =>
+    requests.get<IProfile[]>(`/follow/${username}?predicate=${predicate}`),
 };
 
 const agent = {
