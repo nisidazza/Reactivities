@@ -13,21 +13,20 @@ export type IActivity = {
   isGoing: boolean;
   isHost: boolean;
   host?: IProfile;
-  attendees?: IProfile[];
+  attendees: IProfile[];
 };
-
 
 // we can create a new activity object from the activity form values
 export class Activity implements IActivity {
   constructor(init: ActivityFormValues) {
     // because of linting rules we cannot use Object.assing(this, init)
-    this.id = init.id!
-    this.title = init.title
-    this.category = init.category
-    this.description = init.description
-    this.date = init.date
-    this.city = init.city
-    this.venue = init.venue
+    this.id = init.id!;
+    this.title = init.title;
+    this.category = init.category;
+    this.description = init.description;
+    this.date = init.date;
+    this.city = init.city;
+    this.venue = init.venue;
   }
 
   id: string;
@@ -42,7 +41,7 @@ export class Activity implements IActivity {
   isGoing: boolean = false;
   isHost: boolean = false;
   host?: IProfile;
-  attendees?: IProfile[];
+  attendees: IProfile[] = [];
 }
 
 // we can initialize some values when we pass an activity obj from the API to the class constructor
