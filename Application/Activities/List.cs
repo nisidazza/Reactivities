@@ -1,7 +1,7 @@
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -17,8 +17,10 @@ namespace Application.Activities
             // we need a constructor in order to get access to the data context
             private readonly DataContext _context;
             private readonly IMapper _mapper;
-            public Handler(DataContext context, IMapper mapper)
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _mapper = mapper;
                 _context = context;
 
@@ -34,7 +36,7 @@ namespace Application.Activities
                 //instead og above, automapper extension allows us to project to an entity or a class (activity dto)
                 // in this way we are getting only the properties we are interested in 
                 var activities = await _context.Activities
-                .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider, new { currentUsername = _userAccessor.GetUsername() })
                 .ToListAsync(cancellationToken);
 
 
