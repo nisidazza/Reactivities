@@ -39,6 +39,7 @@ namespace Application.Activities
                 //instead og above, automapper extension allows us to project to an entity or a class (activity dto)
                 // in this way we are getting only the properties we are interested in 
                 var query = _context.Activities
+                .OrderBy(d => d.Date)
                 .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider, new { currentUsername = _userAccessor.GetUsername() })
                 .AsQueryable(); //we defer the execution until we create a paged list
 
