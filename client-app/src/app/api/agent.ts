@@ -84,7 +84,10 @@ const requests = {
 };
 
 const ActivitiesRequests = {
-  list: () => requests.get<PaginatedResult<Activities>>("/activities"),
+  list: (params: URLSearchParams) =>
+    axios
+      .get<PaginatedResult<Activities>>("/activities", { params })
+      .then(responseBody), //we're not using the requests above, so we need to pass the response body
   details: (id: string) => requests.get<Activity>(`/activities/${id}`),
   create: (activity: ActivityFormValues) =>
     requests.post<void>("activities/", activity),
