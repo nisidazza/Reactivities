@@ -3,6 +3,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
 import { Activities, Activity, ActivityFormValues } from "../models/activity";
+import { IPagination } from "../models/pagination";
 import { Profile } from "../models/profile";
 import { store } from "./store";
 
@@ -12,6 +13,7 @@ export default class ActivityStore {
   editMode = false;
   loading = false;
   loadingInitial = false;
+  pagination: IPagination | null = null;
 
   constructor() {
     // we can use makeAutoObservable so we don't need to specify the props
@@ -40,15 +42,20 @@ export default class ActivityStore {
   loadActivities = async () => {
     this.setLoadingInitial(true);
     try {
-      const activities = await agent.ActivitiesRequests.list();
-      activities.forEach((activity) => {
+      const result = await agent.ActivitiesRequests.list();
+      result.data.forEach((activity) => {
         this.setActivity(activity);
       });
+      this.setPagination(result.pagination);
       this.setLoadingInitial(false);
     } catch (error) {
       console.log(error);
       this.setLoadingInitial(false);
     }
+  };
+
+  setPagination = (pagination: IPagination) => {
+    this.pagination = pagination;
   };
 
   loadActivity = async (id: string) => {
