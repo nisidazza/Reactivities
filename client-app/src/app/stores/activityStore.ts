@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
 import { Activities, Activity, ActivityFormValues } from "../models/activity";
@@ -15,20 +15,66 @@ export default class ActivityStore {
   loadingInitial = false;
   pagination: IPagination | null = null;
   pagingParams = new PagingParams();
+  // set an initial property for all the activities so we can highlight in the filtering component which one is selected by default
+  predicate = new Map().set("all", true);
 
   constructor() {
     // we can use makeAutoObservable so we don't need to specify the props
     makeAutoObservable(this);
+
+    reaction(
+      () => this.predicate.keys(), // observe keys' changes
+      () => {
+        this.pagingParams = new PagingParams(); // reset params
+        this.activityRegistry.clear(); 
+        this.loadActivities(); // it takes axios params and will load the next batch of activities
+      }
+    );
   }
 
   setPagingParams = (pagingParams: PagingParams) => {
     this.pagingParams = pagingParams;
   };
 
+  setPredicate = (predicate: string, value: string | Date) => {
+    const resetPredicate = () => {
+      this.predicate.forEach((_, k) => {
+        if (k !== "startDate") this.predicate.delete(k);
+      });
+    };
+    switch (predicate) {
+      case "all":
+        resetPredicate();
+        this.predicate.set("all", true);
+        break;
+
+      case "isGoing":
+        resetPredicate();
+        this.predicate.set("isGoing", true);
+        break;
+
+      case "isHost":
+        resetPredicate();
+        this.predicate.set("isHost", true);
+        break;
+
+      case "startDate":
+        this.predicate.delete("startDate");
+        this.predicate.set("startDate", value);
+    }
+  };
+
   get axiosParams() {
     const params = new URLSearchParams();
     params.append("pageNumber", this.pagingParams.pageNumber.toString());
     params.append("pageSize", this.pagingParams.pageSize.toString());
+    this.predicate.forEach((value, key) => {
+      if (key === "startDate") {
+        params.append(key, (value as Date).toISOString());
+      } else {
+        params.append(key, value);
+      }
+    });
     return params;
   }
 
