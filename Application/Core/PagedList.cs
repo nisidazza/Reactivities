@@ -8,7 +8,7 @@ namespace Application.Core
         {
             CurrentPage = pageNumber;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-            PageSize = PageSize;
+            PageSize = pageSize;
             TotalCount = count;
             AddRange(items);
         }
