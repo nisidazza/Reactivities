@@ -41,9 +41,13 @@ app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles(); // looks inside wwwroot folder and retrieve the index.html that it's going to use and serve from the Kestrel server
+app.UseStaticFiles(); // serves the content inside the wwwroot folder
+
 app.MapControllers();
 
 app.MapHub<ChatHub>("/chat"); // route we'e going to direct users to when they connect to our chat hub;
+app.MapFallbackToController("Index", "Fallback");
 
 // Creating the database
 // we don't have dependency injection here, so in order to use DataContext service we need to use a scope
