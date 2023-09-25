@@ -4,7 +4,7 @@ import { Button, Header, Segment } from "semantic-ui-react";
 import { ValidationError } from "./ValidationError";
 
 export const TestErrors = () => {
-  const baseUrl = "http://localhost:5000/api/";
+  const baseUrl = import.meta.env.VITE_API_URL + "/";
 
   const [errors, setErrors] = useState<string[] | null>(null);
 
