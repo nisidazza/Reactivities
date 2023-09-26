@@ -2,6 +2,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 #location inside the Docker container
 WORKDIR /app 
+# expose port for Fly Health check
+EXPOSE 8080
 
 # copy .csproj and restore as distinct layers
 # we copy sln and csproj from the file system inside the /app directory and we can execute dotnet restore inside the container
