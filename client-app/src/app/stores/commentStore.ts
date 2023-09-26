@@ -38,7 +38,7 @@ export default class CommentStore {
         runInAction(() => {
           comments.forEach((comment) => {
             // comments coming from the Db are not in UTC format
-            comment.createdAt = new Date(comment.createdAt + "Z");
+            comment.createdAt = new Date(comment.createdAt);
           });
           this.comments = comments;
         }); //update observable
