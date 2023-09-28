@@ -27,10 +27,41 @@ var app = builder.Build();
 // Configure the HTTP request pipeline - Middleware
 app.UseMiddleware<ExceptionMiddleware>();
 
+app.UseXContentTypeOptions();
+// allows a site to control how much info the browser includes when navigating away from the app
+app.UseReferrerPolicy(opt => opt.NoReferrer());
+// cross sites scripting protection header
+app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
+// prevents app to be used inside an IFrame
+app.UseXfo(opt => opt.Deny());
+// main defense against cross-site scripting attacks
+app.UseCsp(opt => opt
+// force app to load only HTTPs content
+.BlockAllMixedContent()
+// Self: whatever it's coming from our domain, are approved sources of content
+.StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com"))
+.FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:"))
+.FormActions(s => s.Self())
+.FrameAncestors(s => s.Self())
+.ImageSources(s => s.Self().CustomSources("blob:", "https://res.cloudinary.com"))
+.ScriptSources(s => s.Self())
+);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    // enable strict transport policy header only in Production mode
+    // we should use app.UseHsts() middleware but not working properly
+    app.Use(async (context, next) =>
+    {
+        // max age is 1 year in seconds
+        context.Response.Headers.Add("strict-Transport-Security", "max-age=31536000");
+        await next.Invoke();
+    });
 }
 
 // Order is important here because the request goes through a pipeline
