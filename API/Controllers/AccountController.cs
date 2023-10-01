@@ -16,8 +16,10 @@ namespace API.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
-        public AccountController(UserManager<AppUser> userManager, TokenService tokenService)
+        private readonly SignInManager<AppUser> _signInManager;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, TokenService tokenService)
         {
+            _signInManager = signInManager;
             _tokenService = tokenService;
             _userManager = userManager;
             // the user logs in with username and password 
@@ -33,15 +35,19 @@ namespace API.Controllers
             .Include(p => p.Photos)
             .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
 
-            if (user == null) return Unauthorized();
+            if (user == null) return Unauthorized("Invalid Email");
 
-            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            if(user.UserName == "bob") user.EmailConfirmed = true;
 
-            if (result)
+            if (!user.EmailConfirmed) return Unauthorized("Email not confirmed");
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+            if (result.Succeeded)
             {
                 return CreateUserObject(user);
             }
-            return Unauthorized();
+            return Unauthorized("Invalid Password");
         }
 
         [AllowAnonymous]
