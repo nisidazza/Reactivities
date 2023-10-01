@@ -8,6 +8,7 @@ using Infrastructure.Photos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using Infrastructure.Email;
 
 namespace API.Extensions
 {
@@ -71,6 +72,7 @@ namespace API.Extensions
             services.AddHttpContextAccessor(); // so we can use it inside the Infrastructure project
             services.AddScoped<IUserAccessor, UserAccessor>(); // thanks to this we can inject it inside the Application handlers
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.AddScoped<EmailSender>();
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary")); // need to match the name in the appsettings.json
             services.AddSignalR();
 
