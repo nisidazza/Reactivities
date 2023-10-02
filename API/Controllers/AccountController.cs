@@ -1,10 +1,13 @@
 using System.Security.Claims;
+using System.Text;
 using API.DTOs;
 using API.Services;
 using Domain;
+using Infrastructure.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
@@ -17,8 +20,10 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, TokenService tokenService)
+        private readonly EmailSender _emailSender;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, TokenService tokenService, EmailSender emailSender)
         {
+            _emailSender = emailSender;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _userManager = userManager;
@@ -37,7 +42,7 @@ namespace API.Controllers
 
             if (user == null) return Unauthorized("Invalid Email");
 
-            if(user.UserName == "bob") user.EmailConfirmed = true;
+            if (user.UserName == "bob") user.EmailConfirmed = true;
 
             if (!user.EmailConfirmed) return Unauthorized("Email not confirmed");
 
@@ -77,12 +82,22 @@ namespace API.Controllers
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            if (result.Succeeded)
-            {
-                return CreateUserObject(user);
-            }
+            if (!result.Succeeded) return BadRequest("Problem registering user"); // user not saved into the Db
 
-            return BadRequest(result.Errors);
+            // if successful result, create the email
+            var origin = Request.Headers["origin"];
+            // when the user uses the token to verify the email address, the userManager compares that token with the one stored in the db
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            // since it is sent as HTML, it needs to be encoded so it doesn't get modified to ts way down ton the client
+            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+            //link sent to the user inside the message
+            var verifyUrl = $"{origin}/account/verifyEmail?token={token}&email={user.Email}";
+            var message = $"<p>Please click the below link to verify your email address:</p><p><a href='{verifyUrl}'>Click to verify email</a></p>";
+
+            await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
+
+            return Ok("Registration success = please verify email");
         }
 
         [Authorize]
