@@ -35,7 +35,7 @@ axios.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    const { data, status, config } = error.response as AxiosResponse;
+    const { data, status, config, headers } = error.response as AxiosResponse;
     const dataErrors = data.errors;
     switch (status) {
       case 400:
@@ -55,7 +55,15 @@ axios.interceptors.response.use(
         }
         break;
       case 401:
-        toast.error("unauthorised");
+        if (
+          status === 401 &&
+          headers["www-authenticate"]?.startWith('Baerer error="invalid_token')
+        ) {
+          store.userStore.logout();
+          toast.error("Session expired - please login again");
+        } else {
+          toast.error("unauthorised");
+        }
         break;
       case 403:
         toast.error("forbidden");

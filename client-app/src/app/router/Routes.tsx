@@ -6,6 +6,7 @@ import { NotFound } from "../../features/errors/NotFound";
 import { ServerError } from "../../features/errors/ServerError";
 import { TestErrors } from "../../features/errors/TestErrors";
 import { ProfilePage } from "../../features/profiles/ProfilePage";
+import { ConfirmEmail } from "../../features/users/ConfirmEmail";
 import { LoginForm } from "../../features/users/LoginForm";
 import { RegisterSuccess } from "../../features/users/RegisterSuccess";
 import { App } from "../layout/App";
@@ -61,6 +62,10 @@ export const routes: RouteObject[] = [
       {
         path: "account/registerSuccess",
         element: <RegisterSuccess />,
+      },
+      {
+        path: "account/verifyEmail", // needs to match the one of the verifyUrl in the AccountController.cs
+        element: <ConfirmEmail />,
       },
       {
         path: "*",
