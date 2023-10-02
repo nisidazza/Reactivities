@@ -39,11 +39,13 @@ export default class UserStore {
   };
 
   register = async (creds: UserFormValues) => {
-    const user = await agent.AccountRequests.register(creds);
-    store.commonStore.setToken(user.token);
-    runInAction(() => (this.user = user));
-    router.navigate("/activities");
-    store.modalStore.closeModal();
+    try {
+      await agent.AccountRequests.register(creds);
+      router.navigate(`/account/registerSuccess?email=${creds.email}`);
+      store.modalStore.closeModal();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   setImage = (image: string) => {

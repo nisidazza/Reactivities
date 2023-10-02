@@ -7,6 +7,7 @@ import { ServerError } from "../../features/errors/ServerError";
 import { TestErrors } from "../../features/errors/TestErrors";
 import { ProfilePage } from "../../features/profiles/ProfilePage";
 import { LoginForm } from "../../features/users/LoginForm";
+import { RegisterSuccess } from "../../features/users/RegisterSuccess";
 import { App } from "../layout/App";
 import { RequireAuth } from "./RequireAuth";
 
@@ -56,6 +57,10 @@ export const routes: RouteObject[] = [
       {
         path: "server-error",
         element: <ServerError />,
+      },
+      {
+        path: "account/registerSuccess",
+        element: <RegisterSuccess />,
       },
       {
         path: "*",
