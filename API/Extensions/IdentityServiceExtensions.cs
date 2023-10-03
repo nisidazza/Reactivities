@@ -32,6 +32,7 @@ namespace API.Extensions
                     IssuerSigningKey = key,
                     ValidateIssuer = false,
                     ValidateAudience = true,
+                    ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero // removes the default lifetime token of 5 minutes
                 };
 

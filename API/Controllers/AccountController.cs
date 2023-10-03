@@ -39,6 +39,7 @@ namespace API.Controllers
 
             if (result)
             {
+                await SetRefreshToken(user);
                 return CreateUserObject(user);
             }
             return Unauthorized();
@@ -71,12 +72,14 @@ namespace API.Controllers
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            if (result.Succeeded)
-            {
-                return CreateUserObject(user);
-            }
 
-            return BadRequest(result.Errors);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            await SetRefreshToken(user);
+            return CreateUserObject(user);
+
+
+
         }
 
         [Authorize]
@@ -87,7 +90,43 @@ namespace API.Controllers
             .Users.Include(u => u.Photos)
             .FirstOrDefaultAsync(u => u.Email == User.FindFirstValue(ClaimTypes.Email));
 
+            await SetRefreshToken(user);
             return CreateUserObject(user);
+        }
+
+        [Authorize] // we are not allowing the user to refresh the token if their JWT has expired 
+        [HttpPost("refreshToken")]
+        // the UserDto is going to contain a new JWT that it can be then store in the local storgae 
+        public async Task<ActionResult<UserDto>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var user = await _userManager.Users.Include(r => r.RefreshTokens).Include(p => p.Photos)
+            .FirstOrDefaultAsync(x => x.UserName == User.FindFirstValue(ClaimTypes.Name));
+
+            if (user == null) return Unauthorized();
+
+            var oldToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
+
+            if (oldToken != null && !oldToken.IsActive) return Unauthorized();
+            if (oldToken != null) oldToken.Revoked = DateTime.UtcNow; // replacing old token with a new one
+
+            return CreateUserObject(user);
+        }
+
+        private async Task SetRefreshToken(AppUser user)
+        {
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshTokens.Add(refreshToken);
+            await _userManager.UpdateAsync(user);
+
+            //send token back inside a cookie
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,// refresh token not accessible via Javascript
+                Expires = DateTime.UtcNow.AddDays(7),
+            };
+
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
 
         private UserDto CreateUserObject(AppUser user)
