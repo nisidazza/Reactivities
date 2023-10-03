@@ -31,7 +31,8 @@ namespace API.Extensions
                     ValidateIssuerSigningKey = true, // check if it's a valid token
                     IssuerSigningKey = key,
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = true,
+                    ClockSkew = TimeSpan.Zero // removes the default lifetime token of 5 minutes
                 };
 
                 // see DOCS: https://learn.microsoft.com/en-us/aspnet/core/signalr/authn-and-authz?view=aspnetcore-7.0
