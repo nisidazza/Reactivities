@@ -61,7 +61,14 @@ namespace API.Extensions
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
                     // policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
-                    policy.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials();
+                    policy
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true)
+                    .AllowCredentials()
+                    // because we are looking for this specific header (www-authenticate) in the client-app agent.ts
+                    // we need to expose this from the API server 
+                    .WithExposedHeaders("WWW-Authenticate", "Pagination");
                 });
             });
             services.AddMediatR(typeof(List.Handler));
