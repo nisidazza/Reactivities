@@ -41,7 +41,7 @@ namespace API.Controllers
             .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
 
             if (user == null) return Unauthorized("Invalid Email");
-
+            // another way would be add the "user.EmailConfirmed = true" to the seed users, drop and recreate the db
             if (user.UserName == "bob") user.EmailConfirmed = true;
 
             if (!user.EmailConfirmed) return Unauthorized("Email not confirmed");
@@ -50,6 +50,7 @@ namespace API.Controllers
 
             if (result.Succeeded)
             {
+                await SetRefreshToken(user);
                 return CreateUserObject(user);
             }
             return Unauthorized("Invalid Password");
@@ -84,7 +85,9 @@ namespace API.Controllers
 
             if (!result.Succeeded) return BadRequest("Problem registering user"); // user not saved into the Db
 
-            // if successful result, create the email
+            //--- if successful result, CREATE THE EMAIL ---
+            
+            // where the registration request came from
             var origin = Request.Headers["origin"];
             // when the user uses the token to verify the email address, the userManager compares that token with the one stored in the db
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -145,7 +148,43 @@ namespace API.Controllers
             .Users.Include(u => u.Photos)
             .FirstOrDefaultAsync(u => u.Email == User.FindFirstValue(ClaimTypes.Email));
 
+            await SetRefreshToken(user);
             return CreateUserObject(user);
+        }
+
+        [Authorize] // we are not allowing the user to refresh the token if their JWT has expired 
+        [HttpPost("refreshToken")]
+        // the UserDto is going to contain a new JWT that it can be then store in the local storgae 
+        public async Task<ActionResult<UserDto>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var user = await _userManager.Users.Include(r => r.RefreshTokens).Include(p => p.Photos)
+            .FirstOrDefaultAsync(x => x.UserName == User.FindFirstValue(ClaimTypes.Name));
+
+            if (user == null) return Unauthorized();
+
+            var oldToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
+
+            if (oldToken != null && !oldToken.IsActive) return Unauthorized();
+            if (oldToken != null) oldToken.Revoked = DateTime.UtcNow; // replacing old token with a new one
+
+            return CreateUserObject(user);
+        }
+
+        private async Task SetRefreshToken(AppUser user)
+        {
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshTokens.Add(refreshToken);
+            await _userManager.UpdateAsync(user);
+
+            //send token back inside a cookie
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,// refresh token not accessible via Javascript
+                Expires = DateTime.UtcNow.AddDays(7),
+            };
+
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
 
         private UserDto CreateUserObject(AppUser user)

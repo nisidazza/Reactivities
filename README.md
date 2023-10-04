@@ -38,7 +38,8 @@ I started learning C# and I wanted to familiarised myself with the syntax and wi
 - AutoMapper
 - FluentValidation
 - MediatR
-- SQLite
+- SQLite/PostgreSQL
+- SendGrid
 
 ## How to run the project
 

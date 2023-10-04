@@ -22,7 +22,7 @@ export const ConfirmEmail = () => {
   const handleConfirmEmailResend = () => {
     agent.AccountRequests.resendEmailConfirm(email)
       .then(() => {
-        toast.success("Verfication email resent = please check your email");
+        toast.success("Verfication email resent - please check your email");
       })
       .catch((error) => console.log(error));
   };

@@ -9,7 +9,7 @@ export const RegisterSuccess = () => {
   const handleConfirmEmailResend = () => {
     agent.AccountRequests.resendEmailConfirm(email)
       .then(() => {
-        toast.success("Verfication email resent = please check your email");
+        toast.success("Verfication email resent - please check your email");
       })
       .catch((error) => console.log(error));
   };
@@ -26,7 +26,7 @@ export const RegisterSuccess = () => {
       </p>
       {email && (
         <>
-          <p>Didn't receive the email? Click the below button</p>
+          <p>Didn't receive the email? Click the below button to resend</p>
           <Button
             primary
             onClick={handleConfirmEmailResend}
