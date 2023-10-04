@@ -64,11 +64,11 @@ namespace API.Extensions
                     policy
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .SetIsOriginAllowed(origin => true)
                     .AllowCredentials()
                     // because we are looking for this specific header (www-authenticate) in the client-app agent.ts
                     // we need to expose this from the API server 
-                    .WithExposedHeaders("WWW-Authenticate", "Pagination");
+                    .WithExposedHeaders("WWW-Authenticate", "Pagination")
+                    .SetIsOriginAllowed(origin => true);
                 });
             });
             services.AddMediatR(typeof(List.Handler));
