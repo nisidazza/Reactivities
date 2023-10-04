@@ -47,8 +47,9 @@ Reactivites/API : dotnet --watch --no-hot-reload
 
 Reactivities/client-app: npm run dev
 
+## Website
 
-
+[Project deployed on FlyIO](https://reactivities-project.fly.dev/) 
 
 
 
