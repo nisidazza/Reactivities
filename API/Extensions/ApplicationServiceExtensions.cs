@@ -68,7 +68,7 @@ namespace API.Extensions
                     // because we are looking for this specific header (www-authenticate) in the client-app agent.ts
                     // we need to expose this from the API server 
                     .WithExposedHeaders("WWW-Authenticate", "Pagination")
-                    .SetIsOriginAllowed(origin => true);
+                    .WithOrigins("http://127.0.0.1:3000", "https://127.0.0.1:3000");
                 });
             });
             services.AddMediatR(typeof(List.Handler));
