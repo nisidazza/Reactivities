@@ -49,7 +49,8 @@ Reactivities/client-app: npm run dev
 
 ## Website
 
-[Project deployed on FlyIO](https://reactivities-project.fly.dev/) 
+Not available anymore (after Fly.io decision to start charging for disk space used by stopped Machines, I deleted my account)
+~[Project deployed on FlyIO](https://reactivities-project.fly.dev/)~
 
 
 
